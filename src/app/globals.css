@@ -1,26 +1,101 @@
 @import "tailwindcss";
 
+/* Light theme defaults */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Base palette */
+  --background: #ffffff;       /* page background */
+  --foreground: #111827;       /* text (gray-900) */
+  --muted: #6b7280;            /* gray-500 */
+  --primary: #3b82f6;          /* blue-500/600 range */
+  --card: #f9fafb;             /* gray-50 */
+  --border: #e5e7eb;           /* gray-200 */
 }
 
+/* Expose tokens to Tailwind v4 so you can use utilities like bg-background, text-foreground, etc. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-card: var(--card);
+  --color-border: var(--border);
 }
 
+/* System dark-mode fallback (when you don't force .dark class) */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0a0a0a;     /* near-black */
+    --foreground: #e5e7eb;     /* gray-200 */
+    --muted: #9ca3af;          /* gray-400 */
+    --primary: #60a5fa;        /* blue-400/500 */
+    --card: #111827;           /* gray-900 */
+    --border: #374151;         /* gray-700 */
   }
+}
+
+/* Class-based dark mode override (add class="dark" on <html> to force dark) */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #e5e7eb;
+  --muted: #9ca3af;
+  --primary: #60a5fa;
+  --card: #111827;
+  --border: #374151;
+
+  color-scheme: dark;
+}
+
+html, body, #__next {
+  height: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  color-scheme: light;
+}
+
+/* Layout helpers */
+.container {
+  @apply mx-auto max-w-5xl px-4;
+}
+
+/* Cards and common UI */
+.card {
+  background-color: var(--card);
+  border-color: var(--border);
+  @apply rounded-lg border p-6 shadow-sm;
+}
+
+/* Buttons */
+.btn {
+  @apply inline-flex items-center justify-center rounded-md px-4 py-2 font-medium transition-colors
+         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2;
+  /* Use foreground for outline ring contrast */
+  --tw-ring-offset-color: var(--background);
+}
+
+.btn-primary {
+  @apply text-white bg-blue-600 hover:bg-blue-700
+         dark:bg-blue-500 dark:hover:bg-blue-600
+         focus-visible:ring-blue-400/50;
+}
+
+
+.btn-outline {
+  @apply border text-gray-900 hover:bg-gray-50
+         dark:text-gray-100 dark:hover:bg-gray-800;
+
+  border-color: var(--border);
+}
+
+/* Badges */
+.badge {
+  @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium;
+
+  /* Light */
+  @apply bg-blue-50 text-blue-700;
+  /* Dark */
+  @apply dark:bg-blue-950 dark:text-blue-200;
 }
